@@ -2,7 +2,7 @@
 #
 # weather <city> - Get the weather for a location
 # forecast <city> - Get the forecast for a location
-JsDom = require "jsdom";
+JsDom = require 'jsdom';
 
 module.exports = (robot) ->
   robot.respond /forecast(?: me)?\s(.*)/, (msg) ->
