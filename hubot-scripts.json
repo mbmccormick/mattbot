@@ -1,1 +1,1 @@
-["google-images.coffee", "help.coffee", "maps.coffee", "math.coffee", "ping.coffee", "roles.coffee", "rules.coffee", "storage.coffee", translate.coffee", "youtube.coffee", "redis-brain.coffee", "tweet.coffee", "shipit.coffee"]
+["redis-brain.coffee", "tweet.coffee", "shipit.coffee"]
