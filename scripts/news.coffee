@@ -12,7 +12,7 @@ module.exports = (robot) ->
       
       strings.push "Here's the latest news on #{topic}:\n"
       for story in body.responseData.results
-        strings.push story.titleNoFormatting
+        strings.push story.titleNoFormatting.replace("&#39;", "'")
 
       msg.send strings.join "\n"
 
