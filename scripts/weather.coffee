@@ -2,10 +2,11 @@
 #
 # weather <city> - Get the weather for a location
 # forecast <city> - Get the forecast for a location
-JsDom = require 'jsdom'
+jsdom = require 'jsdom'
+env = process.env
 
 module.exports = (robot) ->
-  robot.respond /forecast(?: me)?\s(.*)/, (msg) ->
+  robot.respond /forecast(?: me|for|in)?\s(.*)/, (msg) ->
     query msg, (body, err) ->
       return msg.send err if err
 
@@ -16,7 +17,7 @@ module.exports = (robot) ->
 
       strings = []
       
-      strings.push "The forecast for #{city} is as follows:"
+      strings.push "The forecast for #{city} is as follows:\n"
       for element in body.getElementsByTagName("forecast_conditions")
         day = element.getElementsByTagName("day_of_week")[0].getAttribute("data")
         
@@ -35,7 +36,7 @@ module.exports = (robot) ->
 
       msg.send strings.join "\n"
 
-  robot.respond /weather(?: me)?\s(.*)/, (msg) ->
+  robot.respond /weather(?: me|for|in)?\s(.*)/, (msg) ->
     query msg, (body, err) ->
       return msg.send err if err
 
@@ -44,18 +45,18 @@ module.exports = (robot) ->
       
       city = city.getAttribute("data")
       currentCondition = body.getElementsByTagName("current_conditions")[0].getAttribute("data")
-      conditions = currentCondition.getElementsByTagName("condition")[0].getAttribute("data").toLowerCase()
-      humidity = currentCondition.getElementsByTagName("humidity")[0].getAttribute("data").split(' ')[1]
+      conditions = body.getElementsByTagName("current_conditions")[0].getElementsByTagName("condition")[0].getAttribute("data")
+      humidity = body.getElementsByTagName("current_conditions")[0].getElementsByTagName("humidity")[0].getAttribute("data").split(' ')[1]
 
       if env.HUBOT_WEATHER_CELSIUS
-        temp = currentCondition.getElementsByTagName("temp_c")[0].getAttribute("data") + "ºC"
+        temp = body.getElementsByTagName("current_conditions")[0].getElementsByTagName("temp_c")[0].getAttribute("data") + "ºC"
       else
-        temp = currentCondition.getElementsByTagName("temp_f")[0].getAttribute("data") + "ºF"
+        temp = body.getElementsByTagName("current_conditions")[0].getElementsByTagName("temp_f")[0].getAttribute("data") + "ºF"
       
       msg.send "Currently in #{city} it is #{conditions} and #{temp} with a humidity of #{humidity}.\n"
 
   getDom = (xml) ->
-    body = JsDom.jsdom(xml)
+    body = jsdom.jsdom(xml)
     throw Error("No XML data returned.") if body.getElementsByTagName("weather")[0].childNodes.length == 0
     body
 
