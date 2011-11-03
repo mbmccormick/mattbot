@@ -4,7 +4,7 @@
 # news <topic> - Get the latest headlines for a specific topic
 
 module.exports = (robot) ->
-  robot.respond /news(?: me |on )?(.*)/, (msg) ->
+  robot.respond /news(?: me|on)?\s?(.*)/, (msg) ->
     query msg, (response, err) ->
       return msg.send err if err
 
