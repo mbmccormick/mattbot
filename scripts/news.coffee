@@ -5,7 +5,7 @@
 
 module.exports = (robot) ->
   robot.respond /news(?: me|on)?\s(.*)/, (msg) ->
-    query msg.match[1], (response, err, topic) ->
+    query msg, (response, err, topic) ->
       return msg.send err if err
 
       strings = []
@@ -21,15 +21,15 @@ module.exports = (robot) ->
 
       msg.send strings.join "\n"
 
-  query = (topic, cb) ->
-    if (topic == null)
+  query = (msg, cb) ->
+    if (msg.match[1] == null)
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
         .query(topic: "h")
         .get() (err, res, body) ->
           complete err, res, body
     else
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
-        .query(q: topic)
+        .query(q: msg.match[1])
         .get() (err, res, body) ->
           complete err, res, body
 
