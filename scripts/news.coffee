@@ -4,25 +4,39 @@
 # news <topic> - Get the latest headlines for a specific topic
 
 module.exports = (robot) ->
-  robot.respond /news(?: me|on)?\s(.*)/, (msg) ->
-    query msg, (body, err, topic) ->
+  robot.respond /news(?: me|on)?\s?(.*)?/, (msg) ->
+    query msg.match[1], (response, err, topic) ->
       return msg.send err if err
 
       strings = []
       
-      strings.push "Here's the latest news on #{topic}:\n"
-      for story in body.responseData.results
-        strings.push story.titleNoFormatting.replace("&#39;", "'")
+      if (topic == null)
+        strings.push "Here's the latest news on #{topic}:\n"
+      else
+        strings.push "Here's the latest news headlines:\n"
+      
+      for story in response.responseData.results
+        strings.push story.titleNoFormatting.replace("&#39;", "'").replace("&quot;", "\"")
+        strings.push story.unescapedUrl + "\n"
 
       msg.send strings.join "\n"
 
-  query = (msg, cb) ->
-    topic = msg.match[1]
-    msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
-      .query(q: topic)
-      .get() (err, res, body) ->
-        try
-          response = JSON.parse body
-        catch err
-          err = "Sorry, but I could not fetch latest headlines."
-        cb(response, err, topic)
+  query = (topic, cb) ->
+    if (topic == null)
+      msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
+        .query(topic: "h")
+        .get() (err, res, body) ->
+          try
+            response = JSON.parse body
+          catch err
+            err = "Sorry, but I could not fetch the latest headlines."
+          cb(response, err, topic)
+    else
+      msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
+        .query(q: topic)
+        .get() (err, res, body) ->
+          try
+            response = JSON.parse body
+          catch err
+            err = "Sorry, but I could not fetch the latest headlines."
+          cb(response, err, topic)
