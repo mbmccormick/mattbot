@@ -12,7 +12,7 @@ module.exports = (robot) ->
       
       topic = msg.match[1]
       
-      if (topic == null)
+      if (topic != null)
         strings.push "Here's the latest news on \"#{topic}\":\n"
       else
         strings.push "Here's the latest news headlines:\n"
@@ -24,14 +24,14 @@ module.exports = (robot) ->
       msg.send strings.join "\n"
 
   query = (msg, cb) ->
-    if (msg.match[1] == null)
+    if (msg.match[1] != null)
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
-        .query(topic: "h")
+        .query(q: msg.match[1])
         .get() (err, res, body) ->
           complete cb, body, err
     else
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
-        .query(q: msg.match[1])
+        .query(topic: "h")
         .get() (err, res, body) ->
           complete cb, body, err
 
