@@ -52,7 +52,7 @@ module.exports = (robot) ->
   robot.respond /(.*)?(how are you|how's it going|hows it going|how is it going|how's your day|hows your day|how is your day|how goes it)/i, (msg) ->
     msg.send msg.random feelings
 
-  robot.respond /(thanks|thank you|cheers|nice one)/i, (msg) ->
+  robot.respond /(.*)?(thanks|thank you|cheers|nice one)/i, (msg) ->
     msg.send msg.random manners
   
   robot.respond /(.*)?(are you sure)/i, (msg) ->
