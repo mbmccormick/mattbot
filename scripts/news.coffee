@@ -10,7 +10,9 @@ module.exports = (robot) ->
 
       strings = []
       
-      if (msg.match[1] == null)
+      topic = msg.match[1]
+      
+      if (topic == null)
         strings.push "Here's the latest news on \"#{topic}\":\n"
       else
         strings.push "Here's the latest news headlines:\n"
