@@ -49,11 +49,11 @@ module.exports = (robot) ->
   robot.respond /(bye|see ya|see you later|adios|goodbye|goodnight)/i, (msg) ->
     msg.send msg.random salutations
   
-  robot.respond /?(.*)(how are you|how's it going|hows it going|how is it going|how's your day|hows your day|how is your day|how goes it)/i, (msg) ->
+  robot.respond /(.*)?(how are you|how's it going|hows it going|how is it going|how's your day|hows your day|how is your day|how goes it)/i, (msg) ->
     msg.send msg.random feelings
 
   robot.respond /(thanks|thank you|cheers|nice one)/i, (msg) ->
     msg.send msg.random manners
   
-  robot.respond /?(.*)(are you sure)/i, (msg) ->
+  robot.respond /(.*)?(are you sure)/i, (msg) ->
     msg.send "My logic is undeniable."
