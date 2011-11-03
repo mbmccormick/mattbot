@@ -2,6 +2,26 @@
 #
 # Ask questions, get emotional responses from Hubot
 
+greetings = [
+  "Hello, how are you doing?",
+  "Hey there!",
+  "Howdy! How are you today?",  
+  "Hello!",
+  "Why, hello! How are you?",
+  "Hi!",
+  "Hey!"
+]
+
+salutations = [
+  "Goodbye!",
+  "Bye, have a nice day!",
+  "See you later!",  
+  "Bye!",
+  "Goodbye, enjoy your day!",
+  "Come back soon!",
+  "Have a great day! Bye!"
+]
+
 feelings = [
   "I'm doing well today.",
   "I'm fine, thanks for asking.",
@@ -23,6 +43,12 @@ manners = [
 ]
 
 module.exports = (robot) ->
+  robot.respond /(hello|howdy|good morning|good afternoon|hi|hey)/i, (msg) ->
+    msg.send msg.random greetings
+    
+  robot.respond /(bye|see ya|see you later|adios|goodbye|goodnight)/i, (msg) ->
+    msg.send msg.random salutations
+  
   robot.respond /(how are you|how's it going|hows it going|how is it going|how's your day|hows your day|how is your day|how goes it)/i, (msg) ->
     msg.send msg.random feelings
 
