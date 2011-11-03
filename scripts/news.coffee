@@ -26,17 +26,16 @@ module.exports = (robot) ->
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
         .query(topic: "h")
         .get() (err, res, body) ->
-          try
-            response = JSON.parse body
-          catch err
-            err = "Sorry, but I could not fetch the latest headlines."
-          cb(response, err, topic)
+          complete err, res, body
     else
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
         .query(q: topic)
         .get() (err, res, body) ->
-          try
-            response = JSON.parse body
-          catch err
-            err = "Sorry, but I could not fetch the latest headlines."
-          cb(response, err, topic)
+          complete err, res, body
+
+  complete = (err, res, body) ->
+    try
+      response = JSON.parse body
+    catch err
+      err = "Sorry, but I could not fetch the latest headlines."
+    cb(response, err, topic)
