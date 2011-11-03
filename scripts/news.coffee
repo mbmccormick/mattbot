@@ -28,14 +28,14 @@ module.exports = (robot) ->
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
         .query(topic: "h")
         .get() (err, res, body) ->
-          complete err, res, body
+          complete cb, body, err
     else
       msg.http("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&rsz=5")
         .query(q: msg.match[1])
         .get() (err, res, body) ->
-          complete err, res, body
+          complete cb, body, err
 
-  complete = (err, res, body) ->
+  complete = (cb, body, err) ->
     try
       response = JSON.parse body
     catch err
