@@ -5,7 +5,7 @@
 
 module.exports = (robot) ->
   robot.respond /news(?: me|on)?\s(.*)/, (msg) ->
-    query msg, (response, err, topic) ->
+    query msg, (response, err) ->
       return msg.send err if err
 
       strings = []
@@ -40,4 +40,4 @@ module.exports = (robot) ->
       response = JSON.parse body
     catch err
       err = "Sorry, but I could not fetch the latest headlines."
-    cb(response, err, topic)
+    cb(response, err)
